@@ -1,0 +1,27 @@
+Create lexstat project
+===============================================================================
+1. prepare lexical database.
+	1.1 托福词汇
+	1.2 GRE词汇
+	1.3 雅思词汇
+	1.4 六级词汇
+	1.5 四级词汇
+	1.6 考研词汇
+	1.7 上海口译词汇
+
+2. stopword filter.
+
+3. stemming.
+
+4. use QDBM to store dictionarys.
+
+5. combine all the above operators to be APIs.
+
+6. extend use curl to get HTML page and some extract processes.
+
+7. extract original text from PDF format file.
+
+8. use it create a Web application.
+
+9. use it create a Android application.
+
