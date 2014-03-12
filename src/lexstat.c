@@ -258,7 +258,7 @@ int lexstat_statistic(LEXSTAT* lexstat, const char* s) {
     LEXSTAT* lex = lexstat;
     char* desc = NULL, * sword = NULL;
     DICT_TYPE type = 0;
-    const char* delim = " \n\t\r";
+    const char* delim = " \n\t\r,.\"";
     char* word = NULL, * sdup = strdup(s), * _sdup = NULL, * _ssave = NULL;
     for (_sdup = sdup; (word = strtok_r(_sdup, delim, &_ssave)); _sdup = NULL) {
         sword = lexstat_stemming(lex, word); desc = NULL; type = 0;

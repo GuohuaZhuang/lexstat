@@ -8,7 +8,7 @@ Create lexstat project
 	1.5 四级词汇
 	1.6 考研词汇
 
-2. stopword filter.
+2. stopword filter. [OK]
 
 3. stemming. [OK]
 
@@ -23,4 +23,14 @@ Create lexstat project
 8. use it create a Web application.
 
 9. use it create a Android application.
+
+10. optimize filter high document frequency words.
+
+11. optimize combine word which has continuous symbol '-' separated.
+
+12. optimize some more than one byte punctuations to split words.
+
+13. other words exclude in dictionarys try to translate them use Google/Baidu API.
+
+14. arrange user profile informations about words.
 
