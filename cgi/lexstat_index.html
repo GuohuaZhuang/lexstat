@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>lexstat英文阅读单词统计助手</title>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.base64.min.js"></script>
+    <script type="text/javascript" src="js/util.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/lexstat.css">
+	<style type="text/css">
+	</style>
+    <script type="text/javascript" charset="utf-8">
+
+$(document).ready(function() {
+    $('#loading').fadeOut(200);
+});
+
+function UpdateResultShowlist(d, num) {
+    var liststr = "";
+    for (var i = 0; i < num; i ++) {
+        liststr += "<li><span class=\"lex_result_span\">";
+        liststr += d[i].content;
+        liststr += "</span></li>\n";
+    }
+    $('#lex_result_ul').html(liststr);
+}
+
+function GetLexstatResultHandle() {
+    var enurl = $('#lex_enurl').val();
+    Jsoncallback('/cgi-bin/lexstat_web.fcgi', 
+        function (json) {
+            if (json.err != undefined && json.err != "") {
+                alert(json.err);
+                return false;
+            }
+            if (json.success == undefined) {
+                return false;
+            }
+            if (json.d !== undefined) {
+                var num = json.num;
+                var d = json.d;
+                UpdateResultShowlist(d, num);
+            } else {
+                alert('加载失败');
+            }
+        }, 
+        'GET', 
+        {'enurl': $.base64.encode(enurl), 'timestamp' : Date.parse(new Date()) }, 
+        'loading'
+    );
+} 
+
+    </script>
+</head>
+
+<body>
+	<center>
+		<div id="lex_allcontent">
+
+		<div id="lex_title"><p>lexstat英文阅读单词统计助手</p></div>
+        <span class="lex_des">网址URL：</span>
+        <input type="text" id="lex_enurl" name="lex_enurl" size="60" />
+        <input type="button" name="lex_btn_lexstat" id="lex_btn_lexstat" 
+            onclick="GetLexstatResultHandle()" value="分析" />
+        <p id="lex_gap"></p>
+        <p id="lex_lf" class="lex_des">lexstat结果：</p>
+        <div class="lex_result_div">
+            <ul class="lex_result_ul" id="lex_result_ul">
+<!--
+            <li>
+                <span class="lex_result_span">testword  n. 测试词 v. 非意义词 [托福][雅思]</span>
+            </li>
+            <li>
+                <span class="lex_result_span">testword  n. 测试词 v. 非意义词 [托福][雅思]</span>
+            </li>
+-->
+            </ul>
+        </div>
+        </div>
+
+        <div id="lex_copyright">
+        &copy; 2014&nbsp;
+        <a target="_blank" href="http://www.cbigu.com">比咕科技</a>&nbsp;|&nbsp;
+        <a href="mailto:guohua_zhuang@163.com">联系我们</a>
+		</div>
+
+	</center>
+
+<div id="loading" style="position:absolute; left:50%; top:50%; width:220px; height:28px; 
+    margin-top:-14px; margin-left:-110px; z-index:3; visibility: visible;">
+  <table style="width:100%; border:0; cellspacing:0; cellpadding:5; height:26">
+      <tr><td style="text-align: center; vertical-align: top;">
+        <img src="./image/loading.gif" />
+      </td>
+    </tr>
+  </table>
+</div>
+
+</body>
+</html>

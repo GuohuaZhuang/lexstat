@@ -16,13 +16,13 @@ Create lexstat project
 
 5. combine all the above operators to be APIs. [OK]
 
-6. extend use curl to get HTML page and some extract processes.
+6. extend use curl to get HTML page and some extract processes. [OK]
 
 7. extract original text from PDF format file.
 
-8. use it create a Web application.
+8. use it create a Web application. [OK]
 
-9. use it create a Android application.
+9. use it create a Android application. [NO]
 
 10. optimize filter high document frequency words.
 

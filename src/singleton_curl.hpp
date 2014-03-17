@@ -2,16 +2,11 @@
 #ifndef _SINGLETON_CURL_H_
 #define _SINGLETON_CURL_H_
 
-#include "Common.h"
-#include "ext_string.h"
-
-using namespace std;
-
 namespace lexstat {
 class SingletonCurl {
 public:
 	static SingletonCurl* GetInstance(void) {
-		if (m_pInstance == 0) { m_pInstance = new Instance(); }
+		if (m_pInstance == 0) { m_pInstance = new SingletonCurl(); }
 		return m_pInstance;
 	}
 	
@@ -31,10 +26,11 @@ private:
 	
 public:
 	~SingletonCurl();
-	static int GetResult(const std::ext_string& str);
+    static int GetPage(const char* url, const int urlsiz, 
+        char** phtml, int* phtmlsiz);
 	
 private:
-	static map<ext_string, int> m_map_trim;
+    static void* m_curl;
 };
 
 } // namespace
