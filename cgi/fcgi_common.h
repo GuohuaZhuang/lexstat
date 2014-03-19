@@ -41,42 +41,43 @@ char* basedecode(const char* str, int *sp);
 #define get_param(KEY) FCGX_GetParam(KEY, request->envp)
 #define fcgi_printf(...) FCGX_FPrintF(request.out, __VA_ARGS__) 
 
-
 void handle_request(FCGX_Request* request, ext_string& query_str)
 {
 	char *value;
 	printff("Content-Type: text/plain\r\n\r\n");
 	if ((value = get_param("QUERY_STRING")) != NULL)
 	{
-		char* cncode = UrlDecode(value);
-		if(!cncode) return;
-		query_str = cncode;
-		free(cncode);
+		if(value) { query_str = value; }
 	}
 }
 
 
-#define _FCGI_START_	FCGX_Request request;									\
-						FCGX_Init();											\
-						FCGX_InitRequest(&request, 0, 0);						\
-						while (FCGX_Accept_r(&request) >= 0)					\
-						{														\
-							ext_string query_str = "";							\
-							handle_request(&request, query_str);				\
-							map< ext_string, ext_string > query_map;			\
-							vector<ext_string> querys = query_str.split('&');	\
-							vector<ext_string>::iterator it;					\
-							for (it = querys.begin(); it != querys.end(); it++)	\
-							{													\
-								vector<ext_string> element = it->split('=');	\
-								if (element.size() > 1)							\
-									query_map.insert(pair<ext_string, 			\
-										ext_string>(element[0], element[1]));	\
-							}
+#define _FCGI_START_  FCGX_Request request;                                    \
+                      FCGX_Init();                                             \
+                      FCGX_InitRequest(&request, 0, 0);                        \
+                      while (FCGX_Accept_r(&request) >= 0)                     \
+                      {                                                        \
+                          ext_string query_str = ""; char* _tmp = NULL;        \
+                          handle_request(&request, query_str);                 \
+                          map< ext_string, ext_string > query_map;             \
+                          vector<ext_string> querys = query_str.split('&');    \
+                          vector<ext_string>::iterator it;                     \
+                          for (it = querys.begin(); it != querys.end(); it++)  \
+                          {                                                    \
+                              vector<ext_string> element = it->split('=');     \
+                              if (element.size() > 1) {                        \
+                                  _tmp = UrlDecode(element[0].data());         \
+                                  if (_tmp) { element[0] = _tmp; free(_tmp); } \
+                                  _tmp = UrlDecode(element[1].data());         \
+                                  if (_tmp) { element[1] = _tmp; free(_tmp); } \
+                                  query_map.insert(pair<ext_string,            \
+                                      ext_string>(element[0], element[1]));    \
+                              }                                                \
+                          }
 
 
-#define _FCGI_END_		FCGX_Finish_r(&request);								\
-						}
+#define _FCGI_END_      FCGX_Finish_r(&request);                               \
+                      }
 
 
 extern char* UrlDecode(const char* url)

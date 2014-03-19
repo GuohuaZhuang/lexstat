@@ -18,9 +18,11 @@ $(document).ready(function() {
 function UpdateResultShowlist(d, num) {
     var liststr = "";
     for (var i = 0; i < num; i ++) {
-        liststr += "<li><span class=\"lex_result_span\">";
-        liststr += d[i].content;
-        liststr += "</span></li>\n";
+        if ("(null)" != d[i].content) {
+            liststr += "<li><span class=\"lex_result_span\">";
+            liststr += d[i].content;
+            liststr += "</span></li>\n";
+        }
     }
     $('#lex_result_ul').html(liststr);
 }
