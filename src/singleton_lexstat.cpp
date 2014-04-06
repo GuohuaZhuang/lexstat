@@ -15,7 +15,8 @@ SingletonLexstat::MemRelease SingletonLexstat::m_MemRelease;
 
 SingletonLexstat::SingletonLexstat() {
     m_lexstat = (void*) lexstat_init(STOPWORD_DICT, DICT_NUM, 
-        DICT_CET_4, DICT_CET_6, DICT_TOFEL, DICT_PG_E, DICT_GRE, DICT_IELTS);
+        DICT_CET_4, DICT_CET_6, DICT_TOFEL, DICT_PG_E, DICT_GRE, DICT_IELTS, 
+        DICT_OXFORD);
 }
 
 SingletonLexstat::~SingletonLexstat() {

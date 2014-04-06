@@ -19,6 +19,7 @@ DICT_TYPE GET_DICT_TYPE(const char* file) {
     if (strcasestr(file, "GRE")) { return DT_GRE; }
     if (strcasestr(file, "IELTS")) { return DT_IELTS; }
     if (strcasestr(file, "PG")) { return DT_PG_E; }
+    if (strcasestr(file, "OXFORD")) { return DT_OXFORD; }
     return DT_UNKNOWN;
 }
 
@@ -30,6 +31,7 @@ char* GET_DICT_EN_NAME(DICT_TYPE type) {
         case DT_TOFEL: return strdup("TOFEL"); break;
         case DT_GRE: return strdup("GRE"); break;
         case DT_IELTS: return strdup("IELTS"); break;
+        case DT_OXFORD: return strdup("Oxford"); break;
         default: return strdup("UNKNOWN"); break;
     }
     return strdup("UNKNOWN");
@@ -43,6 +45,7 @@ char* GET_DICT_CN_NAME(DICT_TYPE type) {
         case DT_TOFEL: return strdup("托福英语"); break;
         case DT_GRE: return strdup("GRE词汇"); break;
         case DT_IELTS: return strdup("雅思英语"); break;
+        case DT_OXFORD: return strdup("牛津字典"); break;
         default: return strdup("未知"); break;
     }
     return strdup("未知");
@@ -118,7 +121,7 @@ int list_map_output(LS_LISTMAP* listmap) {
 
 // OK
 int db_search(DB* db, const char* sword) {
-    return (db && sword) ? (vlget(db, sword, -1, NULL) ? 1 : 0) : -1;
+    return (db && sword) ? (vlgetcache(db, sword, -1, NULL) ? 1 : 0) : -1;
 }
 
 // OK
@@ -138,9 +141,9 @@ LEXSTAT* lexstat_init(const char* fstopword, int dnum, ...) {
     memset(lexstat->dicts, 0, sizeof(DB*) * dnum);
     memset(lexstat->dtypes, 0, sizeof(DICT_TYPE) * dnum);
     char* dbfile = NULL;
-    va_list ap; int _i = dnum;
+    va_list ap; int _i = 0;
     va_start(ap, dnum);
-    while (-- _i >= 0) {
+    for (_i = 0; _i < dnum; _i ++) {
         dbfile = va_arg(ap, char*);
         if (!(lexstat->dicts[_i] = vlopen(dbfile, VL_OREADER, VL_CMPLEX))) {
             fprintf(stderr, "vlopen '%s': %s\n", dbfile, dperrmsg(dpecode));
@@ -204,7 +207,7 @@ int lexstat_dict_find(LEXSTAT* lexstat, const char* sword,
         if (NULL == lexstat->dicts[i]) { continue; }
         if ((val = vlget(lexstat->dicts[i], sword, -1, NULL))) {
             *ptype = (DICT_TYPE)((*ptype) | (lexstat->dtypes[i]));
-            if (NULL == *pdesc) { *pdesc = val; }
+            if (NULL == *pdesc) { *pdesc = val; break; }
             else { free(val); }
         }
     }
@@ -251,7 +254,7 @@ int lexstat_output_result(LEXSTAT* lexstat) {
     return 0;
 }
 
-// #define _LEXSTAT_DEBUG_
+#define _LEXSTAT_DEBUG_
 #ifdef _LEXSTAT_DEBUG_
 
 #define DEFAULT_LINE_LENGTH 1024
@@ -263,7 +266,7 @@ void lexstat_file_test(const char* filename) {
         fprintf(stderr, "fopen %s failed\n", filename); return;
     }
     LEXSTAT* lexstat = lexstat_init(STOPWORD_DICT, DICT_NUM, DICT_CET_4, 
-        DICT_CET_6, DICT_TOFEL, DICT_PG_E, DICT_GRE, DICT_IELTS);
+        DICT_CET_6, DICT_TOFEL, DICT_PG_E, DICT_GRE, DICT_IELTS, DICT_OXFORD);
     int _line_len = 0; size_t _line_lenmax = DEFAULT_LINE_LENGTH;
     char* _line = (char*) malloc(_line_lenmax);
     while ((_line_len = getline(&_line, &_line_lenmax, fp)) > 0) {

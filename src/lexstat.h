@@ -15,13 +15,14 @@ extern "C" {
 #include "stemming.h"
 
 #define STOPWORD_DICT   DATA_DIR"/STOPWORD.DICT"
-#define DICT_NUM        6
+#define DICT_NUM        7
 #define DICT_CET_4      DATA_DIR"/CET-4.DICT"
 #define DICT_CET_6      DATA_DIR"/CET-6.DICT"
 #define DICT_TOFEL      DATA_DIR"/TOFEL.DICT"
 #define DICT_PG_E       DATA_DIR"/PG-E.DICT"
 #define DICT_GRE        DATA_DIR"/GRE.DICT"
 #define DICT_IELTS      DATA_DIR"/IELTS.DICT"
+#define DICT_OXFORD     DATA_DIR"/OXFORD.DICT"
 
 #define PUBLIC
 #define PRIVATE static
@@ -36,13 +37,14 @@ typedef VILLA DB;
 // OK
 // lexical dict type
 typedef enum {
-    DT_UNKNOWN = 0,              // lexical unknown dict
-    DT_CET_4 = 1 << 0,           // lexical dict of CET-4
-    DT_CET_6 = 1 << 1,           // lexical dict of CET-6
-    DT_PG_E  = 1 << 2,           // lexical dict of Post graduate English
-    DT_TOFEL = 1 << 3,           // lexical dict of TOFEL
-    DT_GRE   = 1 << 4,           // lexical dict of GRE
-    DT_IELTS = 1 << 5            // lexical dict of IELTS
+    DT_UNKNOWN = 0,                // lexical unknown dict
+    DT_CET_4   = 1 << 0,           // lexical dict of CET-4
+    DT_CET_6   = 1 << 1,           // lexical dict of CET-6
+    DT_PG_E    = 1 << 2,           // lexical dict of Post graduate English
+    DT_TOFEL   = 1 << 3,           // lexical dict of TOFEL
+    DT_GRE     = 1 << 4,           // lexical dict of GRE
+    DT_IELTS   = 1 << 5,           // lexical dict of IELTS
+    DT_OXFORD  = 1 << 6            // lexical dict of IELTS
 } DICT_TYPE;
 
 // OK
